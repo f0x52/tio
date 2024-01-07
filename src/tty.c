@@ -1316,6 +1316,13 @@ int tty_connect(void)
     /* Fire alert action */
     alert_connect();
 
+    /* pulse DTR */
+    if (option.dtr_pulse) {
+        toggle_line("DTR", TIOCM_DTR, LINE_TOGGLE);
+        // delay(100);
+        toggle_line("DTR", TIOCM_DTR, LINE_TOGGLE);
+    }
+
     if (option.timestamp)
     {
         next_timestamp = true;
