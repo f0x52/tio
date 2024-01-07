@@ -46,6 +46,7 @@ struct option_t
     unsigned int dsr_pulse_duration;
     unsigned int dcd_pulse_duration;
     unsigned int ri_pulse_duration;
+    bool dtr_pulse;
     bool no_autoconnect;
     bool log;
     bool log_append;

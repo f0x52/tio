@@ -54,6 +54,7 @@ enum opt_t
     OPT_ALERT,
     OPT_COMPLETE_SUB_CONFIGS,
     OPT_MUTE,
+    OPT_DTR_PULSE
 };
 
 /* Default options */
@@ -73,6 +74,7 @@ struct option_t option =
     .dsr_pulse_duration = 100,
     .dcd_pulse_duration = 100,
     .ri_pulse_duration = 100,
+    .dtr_pulse = false,
     .no_autoconnect = false,
     .log = false,
     .log_append = false,
@@ -209,6 +211,7 @@ void options_print()
     tio_printf(" Timestamp: %s", timestamp_state_to_string(option.timestamp));
     tio_printf(" Output delay: %d", option.output_delay);
     tio_printf(" Output line delay: %d", option.output_line_delay);
+    tio_printf(" DTR pulse: %b", option.dtr_pulse);
     tio_printf(" Auto connect: %s", option.no_autoconnect ? "disabled" : "enabled");
     tio_printf(" Pulse duration: DTR=%d RTS=%d CTS=%d DSR=%d DCD=%d RI=%d", option.dtr_pulse_duration,
                                                                             option.rts_pulse_duration,
@@ -246,6 +249,7 @@ void options_parse(int argc, char *argv[])
             {"parity",               required_argument, 0, 'p'                     },
             {"output-delay",         required_argument, 0, 'o'                     },
             {"output-line-delay" ,   required_argument, 0, 'O'                     },
+            {"dtr-pulse",            no_argument, 0, OPT_DTR_PULSE},
             {"line-pulse-duration",  required_argument, 0, OPT_LINE_PULSE_DURATION },
             {"no-autoconnect",       no_argument,       0, 'n'                     },
             {"local-echo",           no_argument,       0, 'e'                     },
@@ -324,6 +328,10 @@ void options_parse(int argc, char *argv[])
 
             case OPT_LINE_PULSE_DURATION:
                 line_pulse_duration_option_parse(optarg);
+                break;
+
+            case OPT_DTR_PULSE:
+                option.dtr_pulse = true;
                 break;
 
             case 'n':
